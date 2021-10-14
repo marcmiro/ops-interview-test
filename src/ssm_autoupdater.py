@@ -1,7 +1,6 @@
 import boto3
 import argparse
 
-
 def execute_autoupdater_on_instances(instances):
     ssm_client = boto3.client('ssm')
     response = ssm_client.send_command(
@@ -11,9 +10,7 @@ def execute_autoupdater_on_instances(instances):
     
     return True
 
-
-# Init asg client and get each instance_id in te region from the asg
-# I didn't use paginator to filter as today it's less than 50 instances
+# I didn't use tags to filter as today it's less than 50 instances
 def retrieve_instances_from_autoscaling_group(autoscaling_group_name):
     instance_ids = []
 
