@@ -57,6 +57,26 @@ data "aws_subnet_ids" "subnets_private" {
   }
 }
 
+# Route Table public subnets
+resource "aws_route_table" "IG_route_table" {
+  vpc_id = data.aws_vpc.selected.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = data.aws_internet_gateway.existing.id
+  }
+
+  tags = {
+    Name = "IG-route-table"
+  }
+}
+
+resource "aws_route_table_association" "associate_routetable_to_public_subnet" {
+  count         = length(data.aws_subnet_ids.subnets_public.ids)
+  subnet_id      = data.aws_subnet_ids.subnets_public.ids[count.index]
+  route_table_id = aws_route_table.IG_route_table.id
+}
+
 # NAT gateway for private
 resource "aws_eip" "nat" {
   vpc      = true
