@@ -2,6 +2,7 @@ resource "aws_launch_configuration" "launch_configuration" {
   name          = "launch_configuration-${var.app_name}"
   image_id      = var.instance_ami
   instance_type = "t2.micro"
+  # I would encrypt user and password with a KMS service on the AWS account to avoid make it visible.
   user_data     = "#!/bin/bash\ncurl -o /usr/local/bin/testapp-autoupdater -u user:tUkArsHqQX4A7Hk7 https://server.com/testapp-autoupdater "
 }
 
